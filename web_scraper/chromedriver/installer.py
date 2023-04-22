@@ -18,19 +18,16 @@ def install_chromedriver():
     system = platform.system()
     print(system)
 
-    dir = f'../chromedriver/{system}/{chrome_ver}/'
-    path = None
-    if os.path.exists(dir):
+    if os.path.exists(f'../chromedriver/{system}/{chrome_ver}/'):
         print('Chromedriver Already Installed!')
     else:
         try:
-            os.makedirs(f'../chromedriver/{system}') # 디렉토리 먼저 생성
-            path = chromedriver_autoinstaller.install(False, f'../chromedriver/{system}')  # cwd=False 지정한 디렉토리에 설치 | cwd=True 현재 디렉토리에 설치
-            print('Chromedriver Installed Completely!')
+            os_dir = f'../chromedriver/{system}'
+            os.makedirs(os_dir) # os 디렉토리 먼저 생성
+            path = chromedriver_autoinstaller.install(False, os_dir)  # cwd=False 지정한 디렉토리에 설치 | cwd=True 현재 디렉토리에 설치
+            print('Chromedriver Installed Completely! ', path) # 설치된 경로 반환
         except Exception as e:
             print('Chromedriver Installation Error : ', e)
-
-    return f'{path}'
 
 install_chromedriver() # import시 바로 실행
 
