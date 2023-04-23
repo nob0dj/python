@@ -35,6 +35,6 @@ install_chromedriver() # import시 바로 실행
 def get_chromedriver_path():
     chrome_ver = chromedriver_autoinstaller.get_chrome_version().split(".")[0]
     system = platform.system()
-    dir = f'../chromedriver/{system}/{chrome_ver}/'
+    dir = f'../chromedriver/{system}/{chrome_ver}'
     filename = 'chromedriver.exe' if system == 'Windows' else 'chromedriver'
     return f'{dir}/{filename}'

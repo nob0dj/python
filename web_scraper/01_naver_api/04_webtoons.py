@@ -4,28 +4,35 @@ from time import sleep
 from chromedriver import installer # 실행용
 from chromedriver.installer import get_chromedriver_path # 상위 디렉토리 모듈 가져오기
 
+from selenium.webdriver.common.by import By
 
 path = get_chromedriver_path()
 print('path =', path)
 
 url = 'https://comic.naver.com/webtoon?tab=tue'
 service = webdriver.chrome.service.Service(path)
-driver = webdriver.Chrome(service=service)
-
+driver = webdriver.Chrome(service=service) # Chrome(path) 구버젼, Chrome(service) 최신버젼방식
 
 sleep(3)
 driver.get(url)
 
-sleep(10)
+# 별점순 클릭하기
+sleep(5)
+btn_sort_by_star = driver.find_element(By.XPATH, '//*[@id="content"]/div[1]/div/div[2]/button[4]')
+print(btn_sort_by_star) # <selenium.webdriver.remote.webelement.WebElement (session="f3243061b252598683e639c2caca6778", element="67b371e3-d843-49de-89a4-bca0fe77f900")>
+btn_sort_by_star.click()
+
+
+sleep(5)
 soup = BeautifulSoup(driver.page_source, 'html.parser')
 # print(soup)
 
 li_list = soup.select('.component_wrap .item')
 # print(all_webtoons)
 
-for li in li_list:
+for i, li in enumerate(li_list):
     title = li.find('span', class_='ContentTitle__title--e3qXt').text
-    star = li.find('span', class_='Rating__star_area--dFzsb').text
-    print(f'{star} "{title}"')
+    star = li.find('span', class_='Rating__star_area--dFzsb').find('span', class_='text').text
+    print(f'{i + 1} : {star} {title}')
 
 driver.close()
